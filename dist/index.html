@@ -1,0 +1,81 @@
+<html>
+<head>
+  <title>Trumba Feed</title>
+  
+  <link rel="stylesheet" href="css/style.min.css">
+  <script src="js/dependencies/jquery.min.js"></script>
+  <script src="js/dependencies/vue.min.js"></script>
+  <script src="js/dependencies/moment.min.js"></script>
+  
+</head>
+<body>
+  
+  <h3>Upcoming Workshops</h3>
+  
+  <div class="trumba">
+    <trumba-feed :count="5" 
+                 :cap="100"
+                 feed="https://www.trumba.com/calendars/robert-woodruff-library-classes-at-woodruff-library.json"
+                 calendar="http://web.library.emory.edu/news-events/upcoming-classes.html"
+                 :date="{
+                          use: 'start',
+                          period: {day: true, month: true},
+                          format: 'ddd, MMM D, YYYY'
+                         }">
+    </trumba-feed>
+  </div>
+  
+  <h3>Events &amp; Exhibitions</h3>
+  
+  <div class="trumba">
+    <trumba-feed :count="5" 
+                 :cap="100"
+                 feed="https://www.trumba.com/calendars/robert-woodruff-library.json"
+                 calendar="http://web.library.emory.edu/news-events/calendar.html"
+                 :date="{
+                          format: 'MMM D, YYYY',
+                          period: {day: true, month: true},
+                          day: ['MMM D, YYYY', 'MMM D, YYYY'],
+                          time: ['MMM D, YYYY h:mm', 'h:mm a'],
+                          through: '[Through] MMM D, YYYY'
+                        }">
+    </trumba-feed>
+  </div>
+  
+  <template id="trumba-feed">
+    <ul class="feed" :feedid="feed | feedID">
+      <li is="trumba-item" 
+          v-for="item in limit(items, count)" 
+          :item="item"
+          :calendar="calendar"
+          :cap="cap"
+          :date="date"></li>
+      <li class="view-all"><a :href="calendar">View all &raquo;</a></li>
+    </ul>
+  </template>
+  
+  <template id="trumba-item">
+    <li class="item" :itemid="item.eventID" :key="item.eventID">
+      <div class="date">{{datetime(item.startDateTime, item.endDateTime, date)}}</div>
+      <div>
+        <span class="title">
+          <a :href="calendar + '?trumbaEmbed=eventid%3D' + item.eventID + '%26view%3Devent%26-childview%3D'" v-html="item.title"></a>
+        </span>
+        <span class="sign-up">
+          <a v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
+        </span>
+      </div>
+      <div>
+        <span class="desc" v-html="truncate(item.description, cap)"></span>
+        <span class="more" v-if="truncated">
+          <a :href="calendar + '?trumbaEmbed=eventid%3D' + item.eventID + '%26view%3Devent%26-childview%3D'">more &raquo;</a>
+        </span>
+      </div>
+    </li>
+  </template>
+  
+  <script src="js/index.min.js"></script>
+  
+  
+</body>
+</html>
