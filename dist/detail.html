@@ -22,8 +22,8 @@
   
   <template id="trumba-detail">
     <div class="detail" :feedid="feed | feedID" :itemid="item.eventID">
-      <div class="feature">
-        <img v-if="item.eventImage" :src="item.eventImage.url">
+      <div class="feature" v-if="item.eventImage">
+        <img :src="item.eventImage.url">
       </div>
       <strong class="title" v-html="item.title"></strong>
       <div class="date">{{datetime(item.startDateTime, item.endDateTime, date)}}</div>
