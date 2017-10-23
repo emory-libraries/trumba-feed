@@ -8,111 +8,242 @@
   $sans-serif-alt: 'PT Sans', Verdana, Arial, sans-serif;
   $serif: 'PT Serif', Georgia, 'Times New Roman', serif;
   
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  a { display: inline-block; }
-  
-  .date { 
-    font-family: $sans-serif;
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  .title {
-    display: inline-block;
-    font-size: 18px;
-    font-weight: normal;
-    text-transform: none;
-    transition: all .25s ease;
+  .feed {
     
-    a { 
-      font-family: $sans-serif;
-      color: $blue; 
-      text-decoration: none;
+    &, ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
 
-      &:visited { @extend a; }
-      &:hover { text-decoration: underline; }
+    a { display: inline-block; }
+
+    .date { 
+      font-family: $sans-serif;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .title {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: normal;
+      text-transform: none;
+      transition: all .25s ease;
+
+      a { 
+        font-family: $sans-serif;
+        color: $blue; 
+        text-decoration: none;
+
+        &:visited { @extend a; }
+        &:hover { text-decoration: underline; }
+
+      }
+
+    }
+
+    .sign-up {
+      display: inline-block;
+      margin-left: 5px;
+
+      a {
+        font-size: 10px;
+        font-weight: 600px;
+        text-decoration: none;
+        font-family: $sans-serif;
+        background-color: $light-blue;
+        border: 1px solid $light-blue;
+        border-radius: 3px;
+        padding: 0 6px;
+        white-space: nowrap;
+        color: white;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { background-color: $grey; border-color: $grey; text-decoration: underline; }
+
+      }
+
+    }
+
+    .desc {
+      font-family: $serif;
+      font-size: 16px;
+      margin: 0;
+
+      a {
+        color: $light-blue;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { color: $grey; text-decoration: underline; }
+
+      }
+
+    }
+
+    .more {
+      display: inline-block;
+
+      a {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { text-decoration: underline; }
+
+      }
+
+    }
+
+    .view-all {
+      border-top: 1px solid $light-grey;
+      padding-top: 5px;
+      margin-top: 25px;
+
+      a {
+        color: $blue;
+        font-family: $sans-serif-alt;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { text-decoration: underline; }
+
+      }
 
     }
     
   }
   
-  .sign-up {
-    display: inline-block;
-    margin-left: 5px;
+  .detail {
     
-    a {
-      font-size: 10px;
-      font-weight: 600px;
-      text-decoration: none;
-      font-family: $sans-serif;
-      background-color: $light-blue;
-      border: 1px solid $light-blue;
-      border-radius: 3px;
-      padding: 0 6px;
-      white-space: nowrap;
-      color: white;
-      transition: all .25s ease;
-      
-      &:visited { @extend a; }
-      &:hover { background-color: $grey; border-color: $grey; text-decoration: underline; }
-      
-    }
+    a { display: inline-block; }
     
-  }
-  
-  .desc {
-    font-family: $serif;
-    font-size: 16px;
-    margin: 0;
-    
-    a {
-      color: $light-blue;
-      text-decoration: none;
-      transition: all .25s ease;
+    .feature {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      background-color: whitesmoke;
+      margin-bottom: 2em;
+      overflow: hidden;
       
-      &:visited { @extend a; }
-      &:hover { color: $grey; text-decoration: underline; }
+      img {
+        display: block;
+        position: absolute;
+        max-width: 100%;
+        left: 50%;
+        top: 50%;
+        transform: translate3d(-50%, -50%, 0);
+      }
       
     }
     
-  }
-  
-  .more {
-    display: inline-block;
-    
-    a {
-      color: inherit;
-      font-family: inherit;
-      font-size: inherit;
-      text-decoration: none;
-      transition: all .25s ease;
-      
-      &:visited { @extend a; }
-      &:hover { text-decoration: underline; }
-      
-    }
-    
-  }
-  
-  .view-all {
-    border-top: 1px solid $light-grey;
-    padding-top: 5px;
-    margin-top: 25px;
-    
-    a {
-      color: $blue;
+    .date {
       font-family: $sans-serif-alt;
-      text-decoration: none;
       font-size: 14px;
-      transition: all .25s ease;
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-bottom: 10px;
+    }
+    
+    .title {
+      font-family: $sans-serif-alt;
+      display: inline-block;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .sign-up {
+
+      a {
+        font-size: 12px;
+        font-weight: 600px;
+        text-decoration: none;
+        font-family: $sans-serif;
+        background-color: $light-blue;
+        border: 1px solid $light-blue;
+        border-radius: 3px;
+        padding: 0 6px;
+        white-space: nowrap;
+        color: white;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { background-color: $grey; border-color: $grey; text-decoration: underline; }
+
+      }
       
-      &:visited { @extend a; }
-      &:hover { text-decoration: underline; }
+    }
+    
+    .desc {
+      font-family: $serif;
+      font-size: 16px;
+
+      a {
+        color: $light-blue;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { color: $grey; text-decoration: underline; }
+
+      }
+
+    }
+    
+    .info {
+      border-collapse: collapse;
+      font-family: $sans-serif-alt;
+      font-size: .9em;
+      
+      th { 
+        text-align: left; 
+        color: $blue;
+        padding-right: 20px;
+      }
+      
+      a {
+        color: $light-blue;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { color: $grey; text-decoration: underline; }
+
+      }
+      
+      
+    }
+    
+    .links {
+      border-top: 1px solid $light-grey;
+      padding-top: 5px;
+      margin-top: 25px;
+      clear: both;
+
+      a {
+        display: inline-block;
+        color: $blue;
+        font-family: $sans-serif-alt;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { text-decoration: underline; }
+        
+        + a { float: right; margin-left: 10px; }
+
+      }
+      
       
     }
     

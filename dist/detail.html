@@ -22,11 +22,16 @@
   
   <template id="trumba-detail">
     <div class="detail" :feedid="feed | feedID" :itemid="item.eventID">
-      <strong v-html="item.title"></strong>
-      <span>{{datetime(item.startDateTime, item.endDateTime, date)}}</span>
-      <a class="sign-up" v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
-      <p v-html="item.description"></p>
-      <table>
+      <div class="feature">
+        <img v-if="item.eventImage" :src="item.eventImage.url">
+      </div>
+      <strong class="title" v-html="item.title"></strong>
+      <div class="date">{{datetime(item.startDateTime, item.endDateTime, date)}}</div>
+      <div class="sign-up">
+        <a v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
+      </div>
+      <p class="desc" v-html="item.description"></p>
+      <table class="info">
         <tr>
           <th>Location</th>
           <td v-html="item.location"></td>
@@ -67,23 +72,13 @@
             Text Event Info
           </a>
         </li>
-        <li>
-          <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'">
-            Print
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="facebook()">Post to Facebook</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="twitter()">Tweet on Twitter</a>
-        </li>
-        <li>
-          <a :href="calendar">
-            Back to Calendar
-          </a>
-        </li>
       </ul>
+      <div class="links">
+        <a :href="calendar">&laquo; Back to Calendar</a>
+        <a href="javascript:void(0)" @click="twitter()">Twitter</a>
+        <a href="javascript:void(0)" @click="facebook()">Facebook</a>
+        <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'">Print</a>
+      </div>
     </div>
   </template>
   
