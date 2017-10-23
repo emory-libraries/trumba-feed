@@ -47,6 +47,7 @@
       <li is="trumba-item" 
           v-for="item in limit(items, count)" 
           :item="item"
+          :feed="feed"
           :calendar="calendar"
           :cap="cap"
           :date="date"></li>
@@ -59,7 +60,8 @@
       <div class="date">{{datetime(item.startDateTime, item.endDateTime, date)}}</div>
       <div>
         <span class="title">
-          <a :href="calendar + '?trumbaEmbed=eventid%3D' + item.eventID + '%26view%3Devent%26-childview%3D'" v-html="item.title"></a>
+          <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar='+calendar"
+             v-html="item.title"></a>
         </span>
         <span class="sign-up">
           <a v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>

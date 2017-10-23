@@ -190,7 +190,7 @@ Vue.component('trumba-item', {
   
   template: '#trumba-item',
   
-  props: ['item', 'calendar', 'cap', 'date'],
+  props: ['item', 'calendar', 'cap', 'date', 'feed'],
   
   data: function(){
     return {
@@ -256,7 +256,7 @@ Vue.component('trumba-detail', {
         }),
         $('<meta>', { 
           property: 'og:image', 
-          content: this.item.eventImage ? this.item.event.image.url : null
+          content: this.item.eventImage ? this.item.eventImage.url : null
         })
       ].forEach(function(meta){
         
