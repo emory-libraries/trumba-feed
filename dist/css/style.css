@@ -1,0 +1,97 @@
+.trumba ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.trumba a, .trumba .title a:visited, .trumba .sign-up a:visited, .trumba .desc a:visited, .trumba .more a:visited, .trumba .view-all a:visited {
+  display: inline-block;
+}
+.trumba .date {
+  font-family: "PT Sans Narrow", Verdana, Arial, sans-serif;
+  font-size: 18px;
+  margin: 10px 0;
+}
+.trumba .title {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: normal;
+  text-transform: none;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+.trumba .title a, .trumba .title a:visited {
+  font-family: "PT Sans Narrow", Verdana, Arial, sans-serif;
+  color: #002878;
+  text-decoration: none;
+}
+.trumba .title a:hover {
+  text-decoration: underline;
+}
+.trumba .sign-up {
+  display: inline-block;
+  margin-left: 5px;
+}
+.trumba .sign-up a, .trumba .sign-up a:visited {
+  font-size: 10px;
+  font-weight: 600px;
+  text-decoration: none;
+  font-family: "PT Sans Narrow", Verdana, Arial, sans-serif;
+  background-color: #3366CC;
+  border: 1px solid #3366CC;
+  border-radius: 3px;
+  padding: 0 6px;
+  white-space: nowrap;
+  color: white;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+.trumba .sign-up a:hover {
+  background-color: #666666;
+  border-color: #666666;
+  text-decoration: underline;
+}
+.trumba .desc {
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  margin: 0;
+}
+.trumba .desc a, .trumba .desc a:visited {
+  color: #3366CC;
+  text-decoration: none;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+.trumba .desc a:hover {
+  color: #666666;
+  text-decoration: underline;
+}
+.trumba .more {
+  display: inline-block;
+}
+.trumba .more a, .trumba .more a:visited {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+.trumba .more a:hover {
+  text-decoration: underline;
+}
+.trumba .view-all {
+  border-top: 1px solid #BFBFBF;
+  padding-top: 5px;
+  margin-top: 25px;
+}
+.trumba .view-all a, .trumba .view-all a:visited {
+  color: #002878;
+  font-family: "PT Sans", Verdana, Arial, sans-serif;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+.trumba .view-all a:hover {
+  text-decoration: underline;
+}

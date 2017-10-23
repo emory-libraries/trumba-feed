@@ -142,7 +142,7 @@ module.exports = function( grunt ) {
               match: 'js',
               replacement: function(){
                 return [
-                  '<script src="js/index.js"></script>'
+                  '<script src="js/trumba.js"></script>'
                 ].join("\n  ");
               }
             }
@@ -182,7 +182,7 @@ module.exports = function( grunt ) {
               match: 'js',
               replacement: function(){
                 return [
-                  '<script src="js/index.min.js"></script>'
+                  '<script src="js/trumba.min.js"></script>'
                 ].join("\n  ");
               }
             }

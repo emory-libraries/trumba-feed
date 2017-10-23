@@ -1,0 +1,89 @@
+<html>
+<head>
+  <title>Trumba Detail</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/dependencies/jquery.min.js"></script>
+  <script src="js/dependencies/vue.min.js"></script>
+  <script src="js/dependencies/moment.min.js"></script>
+  
+</head>
+<body>
+  
+  <div class="trumba">
+    <trumba-detail :date="{
+                            format: 'dddd, MMMM D, YYYY',
+                            day: ['dddd, MMMM D, YYYY', 'dddd, MMMM D, YYYY'],
+                            time: ['dddd, MMMM D, YYYY h:mm', 'h:mm a'],
+                            through: false
+                          }">
+    </trumba-detail>
+  </div>
+  
+  <template id="trumba-detail">
+    <div class="detail" :feedid="feed | feedID" :itemid="item.eventID">
+      <strong v-html="item.title"></strong>
+      <span>{{datetime(item.startDateTime, item.endDateTime, date)}}</span>
+      <a class="sign-up" v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
+      <p v-html="item.description"></p>
+      <table>
+        <tr>
+          <th>Location</th>
+          <td v-html="item.location"></td>
+        </tr>
+        <tr v-for="field in item.customFields">
+          <th>{{field.label}}</th>
+          <td v-html="field.value"></td>
+        </tr>
+      </table>
+      <ul>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID">
+            Add to Calendar
+          </a>
+        </li>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/forward/' + item.eventID">
+            Forward to Friends
+          </a>
+        </li>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/notify/' + item.eventID">
+            Notify of Changes
+          </a>
+        </li>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindemail/' + item.eventID">
+            Remind via Email
+          </a>
+        </li>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindtxtmsg/' + item.eventID">
+            Remind via Text
+          </a>
+        </li>
+        <li>
+          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/sendtxtmsg/' + item.eventID">
+            Text Event Info
+          </a>
+        </li>
+        <li>
+          <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'">
+            Print
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" @click="facebook()">Post to Facebook</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" @click="twitter()">Tweet on Twitter</a>
+        </li>
+      </ul>
+    </div>
+  </template>
+  
+  <script src="js/trumba.js"></script>
+  <script src="//localhost:35729/livereload.js"></script>
+  
+</body>
+</html>
