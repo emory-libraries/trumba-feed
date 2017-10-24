@@ -231,21 +231,41 @@
       margin-top: 25px;
       clear: both;
 
-      a {
+      a,
+      label {
         display: inline-block;
         color: $blue;
         font-family: $sans-serif-alt;
         text-decoration: none;
         font-size: 14px;
         transition: all .25s ease;
-
-        &:visited { @extend a; }
-        &:hover { text-decoration: underline; }
+        cursor: pointer;
+        line-height: 1;
         
         + a { float: right; margin-left: 10px; }
+        + label { float: right; margin-left: 10px; }
 
       }
       
+      a {
+        
+        &:visited { @extend a; }
+        &:hover { text-decoration: underline; }
+        
+      }
+      
+      label { overflow: hidden; }
+      
+      select { display: inline-block; transition: all .25s ease; }
+      
+      input[type="checkbox"] { display: none; }
+      input[type="checkbox"]:not(:checked) + select { 
+        max-width: 0; 
+        border: 0; 
+        padding: 0; 
+        margin: 0;
+      }
+      input[type="checkbox"]:checked + select { max-width: 200px; }
       
     }
     

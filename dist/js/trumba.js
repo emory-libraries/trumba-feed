@@ -224,6 +224,7 @@ Vue.component('trumba-detail', {
     return {
       feed: null,
       calendar: null,
+      selected: null,
       id: null,
       item: {}
     };
@@ -301,6 +302,12 @@ Vue.component('trumba-detail', {
           self.location(), '_blank', 'width=540,height=280');
         
       });
+      
+    },
+
+    action: function(){
+                 
+      window.open(this.selected, '_blank', 'width=550, height=700');
       
     }
     

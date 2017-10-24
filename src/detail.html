@@ -5,6 +5,8 @@
   @@css
   @@dependencies
   
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 </head>
 <body>
   
@@ -39,43 +41,46 @@
           <td v-html="field.value"></td>
         </tr>
       </table>
-      <ul>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID">
-            Add to Calendar
-          </a>
-        </li>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/forward/' + item.eventID">
-            Forward to Friends
-          </a>
-        </li>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/notify/' + item.eventID">
-            Notify of Changes
-          </a>
-        </li>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindemail/' + item.eventID">
-            Remind via Email
-          </a>
-        </li>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindtxtmsg/' + item.eventID">
-            Remind via Text
-          </a>
-        </li>
-        <li>
-          <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/sendtxtmsg/' + item.eventID">
-            Text Event Info
-          </a>
-        </li>
-      </ul>
       <div class="links">
         <a :href="calendar">&laquo; Back to Calendar</a>
-        <a href="javascript:void(0)" @click="twitter()">Twitter</a>
-        <a href="javascript:void(0)" @click="facebook()">Facebook</a>
-        <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'">Print</a>
+        <label title="Export" @click="selected = null">
+          <span class="fa fa-share"></span>
+          <input type="checkbox">
+          <select v-model="selected" @change="action()">
+            <option :value="null" disabled>Export Options</option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID">
+                Add to Calendar
+            </option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/forward/' + item.eventID">
+                Forward to Friends
+            </option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/notify/' + item.eventID">
+                Notify of Changes
+            </option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindemail/' + item.eventID">
+                Remind via Email
+            </option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/remindtxtmsg/' + item.eventID">
+                Remind via Text
+            </option>
+            <option :value="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/sendtxtmsg/' + item.eventID">
+                Text Event Info
+            </option>
+          </select>
+          <!--Export-->
+        </label>
+        <a href="javascript:void(0)" @click="twitter()" title="Tweet">
+          <span class="fa fa-twitter"></span>
+          <!--Tweet-->
+        </a>
+        <a href="javascript:void(0)" @click="facebook()" title="Share">
+          <span class="fa fa-facebook"></span>
+          <!--Share-->
+        </a>
+        <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'" title="Print">
+          <span class="fa fa-print"></span>
+          <!--Print-->
+        </a>
       </div>
     </div>
   </template>
