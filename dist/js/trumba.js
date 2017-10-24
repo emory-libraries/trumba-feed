@@ -328,15 +328,15 @@ Vue.component('trumba-detail', {
       
     });
     
-    self = $.extend(true, self, query);
+    self = $.extend(true, self, query); 
     
     $.get('php/proxy.php?url=' + self.feed).done(function(data){
-      
+     
       self.item = JSON.parse(data).filter(function(item){
-        
+    
         return item.eventID == self.id;
         
-      })[0];
+      })[0]; 
       
       self.metadata();
       
