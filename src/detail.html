@@ -67,19 +67,15 @@
                 Text Event Info
             </option>
           </select>
-          <!--Export-->
         </label>
         <a href="javascript:void(0)" @click="twitter()" title="Tweet">
           <span class="fa fa-twitter"></span>
-          <!--Tweet-->
         </a>
         <a href="javascript:void(0)" @click="facebook()" title="Share">
           <span class="fa fa-facebook"></span>
-          <!--Share-->
         </a>
         <a :href="'https://www.trumba.com/calendars/' + $options.filters.feedID(feed) + '?eventid=' + item.eventID + '&view=event&media=print'" title="Print">
           <span class="fa fa-print"></span>
-          <!--Print-->
         </a>
       </div>
     </div>

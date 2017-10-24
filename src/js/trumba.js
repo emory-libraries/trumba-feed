@@ -146,6 +146,25 @@ var methods = {
       
     }
     
+    },
+    queryString = function(){
+      
+      var query = {};
+    
+      location.search.slice(1).split('&').filter(function(value){
+
+        return value != '' && value !== undefined && value !== null;
+
+      }).forEach(function(string){
+
+        var array = string.split('=');
+
+        if( array.length > 0 ) query[array[0]] = $.isNumeric(array[1]) ? +array[1] : array[1];
+
+      });
+      
+      return query;
+      
     };
 
 Vue.component('trumba-feed', {
@@ -321,21 +340,7 @@ Vue.component('trumba-detail', {
   
   created: function() {
     
-    var self = this, query = {};
-    
-    location.search.slice(1).split('&').filter(function(value){
-      
-      return value != '' && value !== undefined && value !== null;
-      
-    }).forEach(function(string){
-      
-      var array = string.split('=');
-      
-      if( array.length > 0 ) query[array[0]] = $.isNumeric(array[1]) ? +array[1] : array[1];
-      
-    });
-    
-    self = $.extend(true, self, query); 
+    var self = $.extend(true, this, queryString());
     
     $.get('php/proxy.php?url=' + self.feed).done(function(data){
      
@@ -346,6 +351,117 @@ Vue.component('trumba-detail', {
       })[0]; 
       
       self.metadata();
+      
+    });
+    
+  }
+  
+});
+
+Vue.component('trumba-calendar', {
+  
+  template: '#trumba-calendar',
+  
+  props: ['format'],
+  
+  data: function(){
+    return {
+      items: []
+    };
+  },
+  
+  methods: {
+    
+    group: function(list, key) {
+      
+      var result = [];
+      
+      list.forEach(function(item){
+        
+        if( !item[key] ) return;
+        
+        var date = moment(item[key]),
+            month = date.format('MMMM'),
+            year = date.year(),
+            group = month + ' ' + year,
+            origin = moment( new Date(group) ).day(1).hours(0).minutes(0).seconds(0),
+            exists = result.filter(function(_group){
+              return _group.name == group;
+            });
+        
+        if( exists.length > 0 ) {
+          
+          exists[0].items.push( item );
+          
+        }
+        
+        else {
+          
+          result.push({
+            name: group,
+            date: origin,
+            items: [ item ]
+          });
+          
+        }
+        
+      });
+      
+      result.sort(function(a, b){
+        
+        if( a.date.isBefore(b.date) ) return -1;
+        if( a.date.isAfter(b.date) ) return 1;
+        return 0;
+        
+      });
+      
+      return result;
+      
+    },
+    
+    datetime: methods.datetime
+    
+  },
+  
+  filters: {
+    
+    date: filters.date
+    
+  },
+  
+  created: function(){
+    
+    var self = $.extend(true, this, queryString());
+    
+    $.get('php/proxy.php?url=' + self.feed).done(function(data){
+     
+      self.items = JSON.parse(data);
+      
+    });
+    
+  }
+  
+});
+
+Vue.component('trumba-schedule', {
+  
+  template: '#trumba-schedule',
+  
+  props: ['date'],
+  
+  data: function(){
+    return {
+      items: []
+    };
+  },
+  
+  created: function(){
+    
+    var self = $.extend(true, this, queryString());
+    
+    $.get('php/proxy.php?url=' + self.feed).done(function(data){
+     
+      self.items = JSON.parse(data);
       
     });
     

@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title>Trumba Schedule</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/dependencies/jquery.min.js"></script>
+  <script src="js/dependencies/vue.min.js"></script>
+  <script src="js/dependencies/moment.min.js"></script>
+  
+</head>
+<body>
+  
+  <div class="trumba">
+    <trumba-detail :date="{
+                            format: 'dddd, MMMM D, YYYY',
+                            day: ['dddd, MMMM D, YYYY', 'dddd, MMMM D, YYYY'],
+                            time: ['dddd, MMMM D, YYYY h:mm', 'h:mm a'],
+                            through: false
+                          }">
+    </trumba-detail>
+  </div>
+  
+  <template id="trumba-schedule">
+
+  </template>
+  
+  <script src="js/trumba.js"></script>
+  <script src="//localhost:35729/livereload.js"></script>
+  
+</body>
+</html>

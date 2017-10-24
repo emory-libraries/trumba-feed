@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>Trumba Calendar</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/dependencies/jquery.min.js"></script>
+  <script src="js/dependencies/vue.min.js"></script>
+  <script src="js/dependencies/moment.min.js"></script>
+  
+</head>
+<body>
+  
+  <div class="trumba">
+    <trumba-calendar format="MMM d, YYYY"></trumba-calendar>
+  </div>
+  
+  <template id="trumba-calendar">
+    <table class="calendar">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>End Date</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody v-for="group in group(items, 'endDateTime')">
+        <tr>
+          <th colspan="3">{{group.name}}</th>
+        </tr>
+        <tr v-for="item in group.items">
+          <td v-html="item.title"></td>
+          <td>{{item.endDateTime | date(format)}}</td>
+          <td v-html="item.location"></td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+  
+  <script src="js/trumba.js"></script>
+  <script src="//localhost:35729/livereload.js"></script>
+  
+</body>
+</html>

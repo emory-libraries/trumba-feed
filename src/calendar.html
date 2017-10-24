@@ -1,0 +1,41 @@
+<html>
+<head>
+  <title>Trumba Calendar</title>
+  
+  @@css
+  @@dependencies
+  
+</head>
+<body>
+  
+  <div class="trumba">
+    <trumba-calendar format="MMM d, YYYY"></trumba-calendar>
+  </div>
+  
+  <template id="trumba-calendar">
+    <table class="calendar">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>End Date</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody v-for="group in group(items, 'endDateTime')">
+        <tr>
+          <th colspan="3">{{group.name}}</th>
+        </tr>
+        <tr v-for="item in group.items">
+          <td v-html="item.title"></td>
+          <td>{{item.endDateTime | date(format)}}</td>
+          <td v-html="item.location"></td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+  
+  @@js
+  @@livereload
+  
+</body>
+</html>
