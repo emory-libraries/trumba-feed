@@ -372,38 +372,48 @@ Vue.component('trumba-calendar', {
   
   methods: {
     
-    group: function(list, key) {
+    byMonth: function(list) {
       
-      var result = [];
+      var groupName = function( date ) {
+            return date.format('MMMM') + ' ' + date.year();
+          },
+          firstOfMonth = function( date ) {
+            return moment(date).startOf('month');
+          },
+          lastOfMonth = function( date ) {
+            return moment(date).endOf('month');
+          },
+          addResult = function( item, date ) {
+            
+            var exists = result.filter(function(lookup){
+              return lookup.name == groupName( date );
+            });
+            
+            if( exists.length > 0 ) {
+              
+              exists[0].items.push( item );
+
+            }
+
+            else {
+
+              result.push({
+                name: groupName( date ),
+                date: firstOfMonth( date ),
+                items: [ item ]
+              });
+
+            }
+            
+          },
+          result = [];
       
       list.forEach(function(item){
         
-        if( !item[key] ) return;
-        
-        var date = moment(item[key]),
-            month = date.format('MMMM'),
-            year = date.year(),
-            group = month + ' ' + year,
-            origin = moment( new Date(group) ).day(1).hours(0).minutes(0).seconds(0),
-            exists = result.filter(function(_group){
-              return _group.name == group;
-            });
-        
-        if( exists.length > 0 ) {
-          
-          exists[0].items.push( item );
-          
-        }
-        
-        else {
-          
-          result.push({
-            name: group,
-            date: origin,
-            items: [ item ]
-          });
-          
-        }
+        var start = moment(item.startDateTime),
+            end = moment(item.endDateTime);
+       
+        addResult( item, end );
         
       });
       
@@ -411,6 +421,79 @@ Vue.component('trumba-calendar', {
         
         if( a.date.isBefore(b.date) ) return -1;
         if( a.date.isAfter(b.date) ) return 1;
+        return 0;
+        
+      });
+      
+      return result;
+      
+    },
+    
+    byDuration: function(list) {
+      
+      var now = moment(),
+          firstOfMonth = function( date ) {
+            return moment(date).startOf('month');
+          },
+          lastOfMonth = function( date ) {
+            return moment(date).endOf('month');
+          },
+          groupName = function( date ) {
+            return date.format('MMMM') + ' ' + date.year();
+          },
+          addResult = function( item, date ) {
+            
+            var exists = result.filter(function(lookup){
+              return lookup.name == groupName( date );
+            });
+            
+            if( exists.length > 0 ) {
+              
+              exists[0].items.push( item );
+
+            }
+
+            else {
+
+              result.push({
+                name: groupName( date ),
+                first: firstOfMonth( date ),
+                last: lastOfMonth( date ),
+                items: [ item ]
+              });
+
+            }
+            
+          },
+          result = [
+            {
+              name: groupName( now ),
+              first: firstOfMonth( now ),
+              last: lastOfMonth( now ),
+              items: []
+            }
+          ];
+      
+      list.forEach(function(item){
+        
+        var start = moment(item.startDateTime),
+            end = moment(item.endDateTime),
+            comp = moment(now);
+        
+        while( end >= firstOfMonth(comp) ) {
+          
+          addResult(item, comp);
+          
+          comp.add(1, 'month');
+          
+        }
+        
+      });
+      
+      result.sort(function(a, b){
+        
+        if( a.first.isBefore(b.first) ) return -1;
+        if( a.first.isAfter(b.first) ) return 1;
         return 0;
         
       });
