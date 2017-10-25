@@ -14,36 +14,44 @@
   
   <template id="trumba-calendar">
     <div class="calendar">
-      <table class="calendar"
-             v-for="(group, index) in byDuration(items)"
-             v-if="month == index">
-        <thead>
-          <tr colspan="4">
-            <th>{{group.name}}</th>
-          </tr>
-          <tr>
-            <th colspan="2">Event</th>
-            <th>End Date</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in group.items">
-            <td><img v-if="item.eventImage" :src="item.eventImage.url" width="100"></td>
-            <td v-html="item.title"></td>
-            <td>{{item.endDateTime | date(format)}}</td>
-            <td v-html="item.location"></td>
-          </tr>
-        </tbody>
-      </table>
-      <button :disabled="month === 0"
-              @click="month--">
+      <button :disabled="month === 0" @click="direction = 'prev'; month--">
         Prev
       </button>
       <button :disabled="month == byDuration(items).length - 1"
-              @click="month++">
+              @click="direction = 'next'; month++">
         Next
       </button>
+      <transition-group name="calendar" 
+                        tag="div" 
+                        class="cal"
+                        @before-enter="beforeTransition"
+                        @before-leave="beforeTransition"
+                        @after-enter="afterTransition"
+                        @after-leave="afterTransition">
+        <table class="month"
+               v-for="(group, index) in byDuration(items)"
+               v-if="month == index"
+               :key="index">
+          <thead>
+            <tr colspan="4">
+              <th>{{group.name}}</th>
+            </tr>
+            <tr>
+              <th colspan="2">Event</th>
+              <th>End Date</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in group.items">
+              <td><img v-if="item.eventImage" :src="item.eventImage.url" width="100"></td>
+              <td v-html="item.title"></td>
+              <td>{{item.endDateTime | date(format)}}</td>
+              <td v-html="item.location"></td>
+            </tr>
+          </tbody>
+        </table>
+      </transition-group>
     </div>
   </template>
   

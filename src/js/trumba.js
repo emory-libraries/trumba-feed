@@ -367,7 +367,8 @@ Vue.component('trumba-calendar', {
   data: function(){
     return {
       items: [],
-      month: 0
+      month: 0,
+      direction: null
     };
   },
   
@@ -503,7 +504,15 @@ Vue.component('trumba-calendar', {
       
     },
     
-    datetime: methods.datetime
+    datetime: methods.datetime,
+    
+    beforeTransition: function(target) { console.log(this.direction);
+      $(target).addClass(this.direction);
+    },
+    
+    afterTransition: function(target) {
+      $(target).removeClass(this.direction);
+    },
     
   },
   
