@@ -366,7 +366,8 @@ Vue.component('trumba-calendar', {
   
   data: function(){
     return {
-      items: []
+      items: [],
+      month: 0
     };
   },
   
