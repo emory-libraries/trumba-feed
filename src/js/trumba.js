@@ -372,6 +372,8 @@ Vue.component('trumba-calendar', {
       month: 0,
       popover: {},
       reset: true,
+      focus: false,
+      hover: false,
       direction: null
     };
   },
@@ -523,6 +525,7 @@ Vue.component('trumba-calendar', {
       var self = this;
       
       self.reset = false;
+      self.hover = true;
       
       var $target = $(event.target);
       
@@ -542,13 +545,23 @@ Vue.component('trumba-calendar', {
       
     },
     
-    hidePopover: function(item, event){
+    hidePopover: function(){ 
       
       var self = this;
       
-      self.reset = true;
+      self.hover = false;
       
-      bus.$emit('popover:hide');
+      setTimeout(function(){
+        
+        if( !self.focus && !self.hover ) {
+      
+          self.reset = true;
+
+          bus.$emit('popover:hide', self.reset);
+
+        }
+        
+      }, 500);
       
     }
     
@@ -576,9 +589,23 @@ Vue.component('trumba-calendar', {
     
     var self = this;
     
-    bus.$on('popover:hide:callback', function(data){
+    bus.$on('popover:hide:callback', function(){
       
       if( self.reset ) self.popover = {};
+      
+    });
+    
+    bus.$on('popover:focus', function(){
+      
+      self.focus = true;
+      
+    });
+    
+    bus.$on('popover:blur', function(){
+      
+      self.focus = false;
+      
+      self.hidePopover();
       
     });
     
@@ -606,7 +633,29 @@ Vue.component('trumba-popover', {
     
     truncate: methods.truncate,
     
-    datetime: methods.datetime
+    datetime: methods.datetime,
+    
+    onFocus: function(){
+      
+      bus.$emit('popover:focus');
+      
+    },
+    
+    onBlur: function(){
+      
+      bus.$emit('popover:blur');
+      
+    },
+    
+    action: function(event){
+      
+      event.preventDefault();
+                 
+      window.open(event.target.href, '_blank', 'width=550, height=700');
+      
+      return false;
+      
+    }
     
   },
   
@@ -623,11 +672,11 @@ Vue.component('trumba-popover', {
       $self.fadeIn();
       
     }).$on('popover:hide', function(){
-      
+        
       $self.fadeOut(function(){
-        
+
         bus.$emit('popover:hide:callback');
-        
+
       });
       
     });
