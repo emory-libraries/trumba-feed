@@ -58,7 +58,7 @@
               <td class="title">
                 <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
                    @mouseover="showPopover(item, $event)"
-                   @mouseleave="hidePopover"
+                   @mouseleave="hidePopover(item, $event)"
                    v-html="item.title"></a>
               </td>
               <td class="date">{{item.endDateTime | date(format)}}</td>
@@ -67,7 +67,13 @@
           </tbody>
         </table>
       </transition-group>
-      <div is="trumba-popover" :feed="feed" :item="popover"></div>
+      <div is="trumba-popover"
+           v-if="popover.eventID"
+           :feed="feed" 
+           :item="popover" 
+           :key="popover.eventID"
+           :style="{ top: popover.y + 'px', left: popover.x + 'px' }">
+      </div>
     </div>
   </template>
   
@@ -76,17 +82,7 @@
       <div class="title" v-html="item.title"></div>
       <div class="date">{{item.startDateTime}} - {{item.endDateTime}}</div>
       <div class="location" v-html="item.location"></div>
-      <div class="desc" v-html="item.description"></div>
-      <div class="links">
-        <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
-           class="fa fa-info">
-          More Info
-        </a>
-        <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID"
-           class="fa fa-calendar">
-          Add to Calendar
-        </a>
-      </div>
+      <div class="desc" v-html="truncate(item.description, 200)"></div>
     </div>
   </template>
   

@@ -167,6 +167,8 @@ var methods = {
       
     };
 
+var bus = new Vue();
+
 Vue.component('trumba-feed', {
   
   template: '#trumba-feed',
@@ -369,6 +371,7 @@ Vue.component('trumba-calendar', {
       items: [],
       month: 0,
       popover: {},
+      reset: true,
       direction: null
     };
   },
@@ -516,11 +519,37 @@ Vue.component('trumba-calendar', {
     },
     
     showPopover: function(item, event){
-      this.popover = item; console.log(this.popover, event);
+      
+      var self = this;
+      
+      self.reset = false;
+      
+      var $target = $(event.target);
+      
+      var x = $target.offset().left + ($target.width() / 2) + 10,
+          y = $target.offset().top + $target.height() + 10;
+      
+      self.popover = $.extend(true, item, {
+        x: x,
+        y: y
+      });
+      
+      setTimeout(function(){ 
+        
+        bus.$emit('popover:show'); 
+      
+      }, 10);
+      
     },
     
-    hidePopover: function(event){
-      this.popover = {};
+    hidePopover: function(item, event){
+      
+      var self = this;
+      
+      self.reset = true;
+      
+      bus.$emit('popover:hide');
+      
     }
     
   },
@@ -541,6 +570,18 @@ Vue.component('trumba-calendar', {
       
     });
     
+  },
+  
+  mounted: function(){
+    
+    var self = this;
+    
+    bus.$on('popover:hide:callback', function(data){
+      
+      if( self.reset ) self.popover = {};
+      
+    });
+    
   }
   
 });
@@ -549,7 +590,7 @@ Vue.component('trumba-popover', {
   
   template: '#trumba-popover',
   
-  props: ['feed', 'item'],
+  props: ['feed', 'item', 'x', 'y'],
   
   data: function(){
     return {};
@@ -557,7 +598,44 @@ Vue.component('trumba-popover', {
   
   filters: {
     
-    feedID: filters.feedID
+    feedID: filters.feedID,
+    
+  },
+  
+  methods: {
+    
+    truncate: methods.truncate
+    
+  },
+  
+  mounted: function(){
+    
+    var self = this;
+    
+    var $self = $(self.$el);
+    
+    $self.hide();
+    
+    bus.$on('popover:show', function(){
+                                       
+      $self.fadeIn();
+      
+    }).$on('popover:hide', function(){
+      
+      $self.fadeOut(function(){
+        
+        bus.$emit('popover:hide:callback');
+        
+      });
+      
+    });
+    
+  },
+  
+  beforeDestroy: function(){
+    
+    bus.$off('popover:show');
+    bus.$off('popover:hide');
     
   }
   

@@ -273,6 +273,7 @@
   }
   
   .calendar, .schedule {
+    position: relative;
     
     .cal { 
       position: relative; 
@@ -324,6 +325,17 @@
       }
     
     }
+    
+    .popover {
+      position: fixed;
+      background-color: white;
+      padding: 10px;
+      box-shadow: 2px 2px 5px rgba(black, .25);
+      border: 1px solid $light-grey;
+      max-width: 400px;
+    }
+    
+    a { display: inline-block; }
     
   }
   
