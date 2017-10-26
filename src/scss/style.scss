@@ -333,6 +333,23 @@
       box-shadow: 2px 2px 5px rgba(black, .25);
       border: 1px solid $light-grey;
       max-width: 400px;
+      font-size: .8em;
+      font-family: $sans-serif-alt;
+      
+      .title, .date, .location { margin: 5px 0; }
+      .title { color: $blue; }
+      .location { font-style: italic; color: $light-blue; }
+      
+      a {
+        color: $light-blue;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { color: $grey; text-decoration: underline; }
+
+      }
+      
     }
     
     a { display: inline-block; }

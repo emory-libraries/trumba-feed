@@ -364,7 +364,7 @@ Vue.component('trumba-calendar', {
   
   template: '#trumba-calendar',
   
-  props: ['format'],
+  props: ['format', 'popformat'],
   
   data: function(){
     return {
@@ -590,7 +590,7 @@ Vue.component('trumba-popover', {
   
   template: '#trumba-popover',
   
-  props: ['feed', 'item', 'x', 'y'],
+  props: ['feed', 'item', 'x', 'y', 'format'],
   
   data: function(){
     return {};
@@ -604,7 +604,9 @@ Vue.component('trumba-popover', {
   
   methods: {
     
-    truncate: methods.truncate
+    truncate: methods.truncate,
+    
+    datetime: methods.datetime
     
   },
   
