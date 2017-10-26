@@ -272,8 +272,7 @@
     
   }
   
-  .calendar,
-  .schedule {
+  .calendar, .schedule {
     
     .cal { 
       position: relative; 
@@ -317,7 +316,7 @@
         transition: all .25s ease;
         
         &:hover { opacity: 1; }
-        &[disabled] { opacity: .25; }
+        &[disabled] { opacity: .25; cursor: not-allowed; }
         &.prev { float: left; }
         &.next { float: right; }
         &::after { content: ""; display: block; clear: both; }

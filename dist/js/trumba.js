@@ -368,6 +368,7 @@ Vue.component('trumba-calendar', {
     return {
       items: [],
       month: 0,
+      popover: {},
       direction: null
     };
   },
@@ -514,6 +515,14 @@ Vue.component('trumba-calendar', {
       $(target).removeClass(this.direction);
     },
     
+    showPopover: function(item, event){
+      this.popover = item; console.log(this.popover, event);
+    },
+    
+    hidePopover: function(event){
+      this.popover = {};
+    }
+    
   },
   
   filters: {
@@ -531,6 +540,24 @@ Vue.component('trumba-calendar', {
       self.items = JSON.parse(data);
       
     });
+    
+  }
+  
+});
+
+Vue.component('trumba-popover', {
+  
+  template: '#trumba-popover',
+  
+  props: ['feed', 'item'],
+  
+  data: function(){
+    return {};
+  },
+  
+  filters: {
+    
+    feedID: filters.feedID
     
   }
   
