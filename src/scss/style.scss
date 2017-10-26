@@ -272,7 +272,8 @@
     
   }
   
-  .calendar {
+  .calendar,
+  .schedule {
     
     .cal { 
       position: relative; 
@@ -295,17 +296,7 @@
         background-color: $light-blue-grey;
       }
       
-      $thumb-size: 75px;
-      $title-size: 50%;
-      $date-size: 15%;
-      $location-size: 35%;
-      
-      .thumb { width: $thumb-size; }
-      .title { width: $title-size }
-      .date { width: $date-size }
-      .location { width: $location-size; }
-      
-      img { max-width: 100%; width: 100%; min-width: $thumb-size; }
+      img { max-width: 100%; width: 100%; }
       
       a {
         color: $blue;
@@ -335,6 +326,26 @@
     
     }
     
+  }
+  
+  .calendar {
+    
+    .cal {
+      
+      $thumb-size: 75px;
+      $title-size: 50%;
+      $date-size: 15%;
+      $location-size: 35%;
+      
+      .thumb { width: $thumb-size; }
+      .title { width: $title-size }
+      .date { width: $date-size }
+      .location { width: $location-size; }
+      
+      img { min-width: $thumb-size; }
+      
+    }
+    
     .calendar-enter-active, 
     .calendar-leave-active {
       transition: all 1s;
@@ -360,6 +371,54 @@
     
     .calendar-enter.next,
     .calendar-leave-to.prev { 
+      transform: translatex(100%); 
+    }
+    
+  }
+  
+  .schedule {
+    
+    .cal {
+      
+      $thumb-size: 75px;
+      $title-size: 50%;
+      $date-size: 15%;
+      $location-size: 35%;
+      
+      .thumb { width: $thumb-size; }
+      .title { width: $title-size }
+      .date { width: $date-size }
+      .location { width: $location-size; }
+      
+      img { min-width: $thumb-size; }
+      
+    }
+    
+    .schedule-enter-active, 
+    .schedule-leave-active {
+      transition: all 1s;
+    }
+    
+    .schedule-enter-active { position: absolute; top: 0; }
+    
+    .schedule-enter,
+    .schedule-leave-to {
+      opacity: 0;
+    }
+    
+    .schedule-enter-to,
+    .schedule-leave {
+      opacity: 1;
+      transform: translatex(0%);
+    }
+    
+    .schedule-leave-to.next,
+    .schedule-enter.prev {
+      transform: translatex(-100%); 
+    }
+    
+    .schedule-enter.next,
+    .schedule-leave-to.prev { 
       transform: translatex(100%); 
     }
     
