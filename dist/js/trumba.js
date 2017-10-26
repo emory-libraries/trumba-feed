@@ -506,7 +506,7 @@ Vue.component('trumba-calendar', {
     
     datetime: methods.datetime,
     
-    beforeTransition: function(target) { console.log(this.direction);
+    beforeTransition: function(target) {
       $(target).addClass(this.direction);
     },
     

@@ -4,6 +4,7 @@
   $light-blue: #3366CC;
   $grey: #666666;
   $light-grey: #BFBFBF;
+  $light-blue-grey: #E4E6F0;
   $sans-serif: 'PT Sans Narrow', Verdana, Arial, sans-serif;
   $sans-serif-alt: 'PT Sans', Verdana, Arial, sans-serif;
   $serif: 'PT Serif', Georgia, 'Times New Roman', serif;
@@ -273,7 +274,66 @@
   
   .calendar {
     
-    .cal { position: relative; }
+    .cal { 
+      position: relative; 
+      font-family: $sans-serif-alt;
+      font-size: 13px;
+      
+      $border: 1px solid $light-grey;
+      
+      table { border-collapse: collapse; font-size: inherit; }
+      th, td { padding: 10px; border-top: $border; border-bottom: $border; }
+    
+      .name { 
+        font-size: 1.25em; 
+        text-align: center; 
+        background-color: whitesmoke;
+      }
+      .headings {
+        font-size: 1.1em; 
+        text-align: left; 
+        background-color: $light-blue-grey;
+      }
+      
+      $thumb-size: 75px;
+      $title-size: 50%;
+      $date-size: 15%;
+      $location-size: 35%;
+      
+      .thumb { width: $thumb-size; }
+      .title { width: $title-size }
+      .date { width: $date-size }
+      .location { width: $location-size; }
+      
+      img { max-width: 100%; width: 100%; min-width: $thumb-size; }
+      
+      a {
+        color: $blue;
+        text-decoration: none;
+        transition: all .25s ease;
+
+        &:visited { @extend a; }
+        &:hover { color: $grey; text-decoration: underline; }
+
+      }
+      
+      .toggle {
+        -webkit-appearance: none;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        opacity: .5;
+        transition: all .25s ease;
+        
+        &:hover { opacity: 1; }
+        &[disabled] { opacity: .25; }
+        &.prev { float: left; }
+        &.next { float: right; }
+        &::after { content: ""; display: block; clear: both; }
+        
+      }
+    
+    }
     
     .calendar-enter-active, 
     .calendar-leave-active {

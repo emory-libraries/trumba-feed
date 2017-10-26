@@ -42,7 +42,9 @@
         </tr>
       </table>
       <div class="links">
-        <a :href="calendar">&laquo; Back to Calendar</a>
+        <a :href="'calendar?feed='+feed">
+          &laquo; Back to Calendar
+        </a>
         <label title="Export" @click="selected = null">
           <span class="fa fa-share"></span>
           <input type="checkbox">

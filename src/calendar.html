@@ -5,6 +5,8 @@
   @@css
   @@dependencies
   
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 </head>
 <body>
   
@@ -14,13 +16,6 @@
   
   <template id="trumba-calendar">
     <div class="calendar">
-      <button :disabled="month === 0" @click="direction = 'prev'; month--">
-        Prev
-      </button>
-      <button :disabled="month == byDuration(items).length - 1"
-              @click="direction = 'next'; month++">
-        Next
-      </button>
       <transition-group name="calendar" 
                         tag="div" 
                         class="cal"
@@ -33,21 +28,39 @@
                v-if="month == index"
                :key="index">
           <thead>
-            <tr colspan="4">
-              <th>{{group.name}}</th>
+            <tr class="name">
+              <th colspan="4">
+                <button class="toggle prev fa fa-chevron-left" 
+                        :disabled="month === 0" 
+                        @click="direction = 'prev'; month--"
+                        title="Previous">
+                </button>
+                {{group.name}}
+                <button class="toggle next fa fa-chevron-right"
+                        :disabled="month == byDuration(items).length - 1"
+                        @click="direction = 'next'; month++"
+                        title="Next">
+                </button>
+              </th>
             </tr>
-            <tr>
-              <th colspan="2">Event</th>
+            <tr class="headings">
+              <th></th>
+              <th>Event</th>
               <th>End Date</th>
               <th>Location</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in group.items">
-              <td><img v-if="item.eventImage" :src="item.eventImage.url" width="100"></td>
-              <td v-html="item.title"></td>
-              <td>{{item.endDateTime | date(format)}}</td>
-              <td v-html="item.location"></td>
+              <td class="thumb">
+                <img v-if="item.eventImage" :src="item.eventImage.url">
+              </td>
+              <td class="title">
+                <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
+                   v-html="item.title"></a>
+              </td>
+              <td class="date">{{item.endDateTime | date(format)}}</td>
+              <td class="location" v-html="item.location"></td>
             </tr>
           </tbody>
         </table>
