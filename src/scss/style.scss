@@ -408,17 +408,15 @@
     
     .cal {
       
-      $thumb-size: 75px;
-      $title-size: 50%;
-      $date-size: 15%;
+      $title-size: 35%;
+      $date-size: 10%;
+      $time-size: 10%;
       $location-size: 35%;
       
-      .thumb { width: $thumb-size; }
       .title { width: $title-size }
       .date { width: $date-size }
+      .time { width: $time-size; }
       .location { width: $location-size; }
-      
-      img { min-width: $thumb-size; }
       
     }
     
