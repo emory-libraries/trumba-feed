@@ -127,8 +127,138 @@ var methods = {
 
         return location.href;
 
-      }
+      },
+  
+      byMonth: function(list) {
+      
+        var groupName = function( date ) {
+              return date.format('MMMM') + ' ' + date.year();
+            },
+            firstOfMonth = function( date ) {
+              return moment(date).startOf('month');
+            },
+            lastOfMonth = function( date ) {
+              return moment(date).endOf('month');
+            },
+            addResult = function( item, date ) {
 
+              var exists = result.filter(function(lookup){
+                return lookup.name == groupName( date );
+              });
+
+              if( exists.length > 0 ) {
+
+                exists[0].items.push( item );
+
+              }
+
+              else {
+
+                result.push({
+                  name: groupName( date ),
+                  date: firstOfMonth( date ),
+                  items: [ item ]
+                });
+
+              }
+
+            },
+            result = [];
+
+        list.forEach(function(item){
+
+          var start = moment(item.startDateTime),
+              end = moment(item.endDateTime);
+
+          addResult( item, end );
+
+        });
+
+        result.sort(function(a, b){
+
+          if( a.date.isBefore(b.date) ) return -1;
+          if( a.date.isAfter(b.date) ) return 1;
+          return 0;
+
+        });
+
+        return result;
+
+      },
+  
+      byDuration: function(list) {
+      
+        var now = moment(),
+            firstOfMonth = function( date ) {
+              return moment(date).startOf('month');
+            },
+            lastOfMonth = function( date ) {
+              return moment(date).endOf('month');
+            },
+            groupName = function( date ) {
+              return date.format('MMMM') + ' ' + date.year();
+            },
+            addResult = function( item, date ) {
+
+              var exists = result.filter(function(lookup){
+                return lookup.name == groupName( date );
+              });
+
+              if( exists.length > 0 ) {
+
+                exists[0].items.push( item );
+
+              }
+
+              else {
+
+                result.push({
+                  name: groupName( date ),
+                  first: firstOfMonth( date ),
+                  last: lastOfMonth( date ),
+                  items: [ item ]
+                });
+
+              }
+
+            },
+            result = [
+              {
+                name: groupName( now ),
+                first: firstOfMonth( now ),
+                last: lastOfMonth( now ),
+                items: []
+              }
+            ];
+
+        list.forEach(function(item){
+
+          var start = moment(item.startDateTime),
+              end = moment(item.endDateTime),
+              comp = moment(now);
+
+          while( end >= firstOfMonth(comp) ) {
+
+            addResult(item, comp);
+
+            comp.add(1, 'month');
+
+          }
+
+        });
+
+        result.sort(function(a, b){
+
+          if( a.first.isBefore(b.first) ) return -1;
+          if( a.first.isAfter(b.first) ) return 1;
+          return 0;
+
+        });
+
+        return result;
+
+      }
+  
     },
     filters = {
     
@@ -140,8 +270,8 @@ var methods = {
       
       date: function( date, format ) {
       
-      if( !format ) return date;
-      
+      if( !format ) return date; 
+  
       return moment(date).format(format);
       
     }
@@ -364,7 +494,7 @@ Vue.component('trumba-calendar', {
   
   template: '#trumba-calendar',
   
-  props: ['format', 'popformat'],
+  props: ['date-format', 'popover-format'],
   
   data: function(){
     return {
@@ -380,135 +510,136 @@ Vue.component('trumba-calendar', {
   
   methods: {
     
-    byMonth: function(list) {
+    byMonth: methods.byMonth,
+    
+    byDuration: methods.byDuration,
+    
+    datetime: methods.datetime,
+    
+    beforeTransition: function(target) {
+      $(target).addClass(this.direction);
+    },
+    
+    afterTransition: function(target) {
+      $(target).removeClass(this.direction);
+    },
+    
+    showPopover: function(item, event){
       
-      var groupName = function( date ) {
-            return date.format('MMMM') + ' ' + date.year();
-          },
-          firstOfMonth = function( date ) {
-            return moment(date).startOf('month');
-          },
-          lastOfMonth = function( date ) {
-            return moment(date).endOf('month');
-          },
-          addResult = function( item, date ) {
-            
-            var exists = result.filter(function(lookup){
-              return lookup.name == groupName( date );
-            });
-            
-            if( exists.length > 0 ) {
-              
-              exists[0].items.push( item );
-
-            }
-
-            else {
-
-              result.push({
-                name: groupName( date ),
-                date: firstOfMonth( date ),
-                items: [ item ]
-              });
-
-            }
-            
-          },
-          result = [];
+      var self = this;
       
-      list.forEach(function(item){
-        
-        var start = moment(item.startDateTime),
-            end = moment(item.endDateTime);
-       
-        addResult( item, end );
-        
+      self.reset = false;
+      self.hover = true;
+      
+      var $target = $(event.target);
+      
+      var x = $target.offset().left + ($target.width() / 2) + 10,
+          y = $target.offset().top + $target.height() + 10;
+      
+      self.popover = $.extend(true, item, {
+        x: x,
+        y: y
       });
       
-      result.sort(function(a, b){
+      setTimeout(function(){ 
         
-        if( a.date.isBefore(b.date) ) return -1;
-        if( a.date.isAfter(b.date) ) return 1;
-        return 0;
-        
-      });
+        bus.$emit('popover:show'); 
       
-      return result;
+      }, 10);
       
     },
     
-    byDuration: function(list) {
+    hidePopover: function(){ 
       
-      var now = moment(),
-          firstOfMonth = function( date ) {
-            return moment(date).startOf('month');
-          },
-          lastOfMonth = function( date ) {
-            return moment(date).endOf('month');
-          },
-          groupName = function( date ) {
-            return date.format('MMMM') + ' ' + date.year();
-          },
-          addResult = function( item, date ) {
-            
-            var exists = result.filter(function(lookup){
-              return lookup.name == groupName( date );
-            });
-            
-            if( exists.length > 0 ) {
-              
-              exists[0].items.push( item );
-
-            }
-
-            else {
-
-              result.push({
-                name: groupName( date ),
-                first: firstOfMonth( date ),
-                last: lastOfMonth( date ),
-                items: [ item ]
-              });
-
-            }
-            
-          },
-          result = [
-            {
-              name: groupName( now ),
-              first: firstOfMonth( now ),
-              last: lastOfMonth( now ),
-              items: []
-            }
-          ];
+      var self = this;
       
-      list.forEach(function(item){
+      self.hover = false;
+      
+      setTimeout(function(){
         
-        var start = moment(item.startDateTime),
-            end = moment(item.endDateTime),
-            comp = moment(now);
-        
-        while( end >= firstOfMonth(comp) ) {
-          
-          addResult(item, comp);
-          
-          comp.add(1, 'month');
-          
+        if( !self.focus && !self.hover ) {
+      
+          self.reset = true;
+
+          bus.$emit('popover:hide', self.reset);
+
         }
         
-      });
+      }, 500);
       
-      result.sort(function(a, b){
-        
-        if( a.first.isBefore(b.first) ) return -1;
-        if( a.first.isAfter(b.first) ) return 1;
-        return 0;
-        
-      });
+    }
+    
+  },
+  
+  filters: {
+    
+    date: filters.date
+    
+  },
+  
+  created: function(){
+    
+    var self = $.extend(true, this, queryString());
+    
+    $.get('php/proxy.php?url=' + self.feed).done(function(data){
+     
+      self.items = JSON.parse(data);
       
-      return result;
+    });
+    
+  },
+  
+  mounted: function(){
+    
+    var self = this;
+    
+    bus.$on('popover:hide:callback', function(){
       
-    },
+      if( self.reset ) self.popover = {};
+      
+    });
+    
+    bus.$on('popover:focus', function(){
+      
+      self.focus = true;
+      
+    });
+    
+    bus.$on('popover:blur', function(){
+      
+      self.focus = false;
+      
+      self.hidePopover();
+      
+    });
+    
+  }
+  
+});
+
+Vue.component('trumba-schedule', {
+  
+  template: '#trumba-schedule',
+  
+  props: ['date-format', 'time-format', 'popover-format'],
+  
+  data: function(){
+    return {
+      items: [],
+      month: 0,
+      popover: {},
+      reset: true,
+      focus: false,
+      hover: false,
+      direction: null
+    };
+  },
+  
+  methods: {
+    
+    byMonth: methods.byMonth,
+    
+    byDuration: methods.byDuration,
     
     datetime: methods.datetime,
     
@@ -687,32 +818,6 @@ Vue.component('trumba-popover', {
     
     bus.$off('popover:show');
     bus.$off('popover:hide');
-    
-  }
-  
-});
-
-Vue.component('trumba-schedule', {
-  
-  template: '#trumba-schedule',
-  
-  props: ['date'],
-  
-  data: function(){
-    return {
-      items: []
-    };
-  },
-  
-  created: function(){
-    
-    var self = $.extend(true, this, queryString());
-    
-    $.get('php/proxy.php?url=' + self.feed).done(function(data){
-     
-      self.items = JSON.parse(data);
-      
-    });
     
   }
   

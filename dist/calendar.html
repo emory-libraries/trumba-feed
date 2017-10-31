@@ -13,8 +13,8 @@
 <body>
   
   <div class="trumba">
-    <trumba-calendar format="MMM d, YYYY" 
-                     :popformat="{
+    <trumba-calendar date-format="MMM d, YYYY" 
+                     :popover-format="{
                                   through: false,
                                   day: ['dddd, MMMM D, YYYY', 'dddd, MMMM D, YYYY'],
                                   time: ['dddd, MMMM D, YYYY h:mm', 'h:mm a'],
@@ -70,7 +70,7 @@
                    @mouseleave="hidePopover()"
                    v-html="item.title"></a>
               </td>
-              <td class="date">{{item.endDateTime | date(format)}}</td>
+              <td class="date">{{item.endDateTime | date(dateFormat)}}</td>
               <td class="location" v-html="item.location"></td>
             </tr>
           </tbody>
@@ -81,7 +81,7 @@
            :feed="feed" 
            :item="popover" 
            :key="popover.eventID"
-           :format="popformat"
+           :format="popoverFormat"
            :style="{ top: popover.y + 'px', left: popover.x + 'px' }">
       </div>
     </div>

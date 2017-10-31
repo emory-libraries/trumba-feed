@@ -11,17 +11,105 @@
 <body>
   
   <div class="trumba">
-    <trumba-detail :date="{
-                            format: 'dddd, MMMM D, YYYY',
-                            day: ['dddd, MMMM D, YYYY', 'dddd, MMMM D, YYYY'],
-                            time: ['dddd, MMMM D, YYYY h:mm', 'h:mm a'],
-                            through: false
-                          }">
-    </trumba-detail>
+    <trumba-schedule date-format="MMM D"
+                     time-format="h:mm a"
+                     :popover-format="{
+                                  through: false,
+                                  day: ['dddd, MMMM D, YYYY', 'dddd, MMMM D, YYYY'],
+                                  time: ['dddd, MMMM D, YYYY h:mm', 'h:mm a'],
+                                  format: 'dddd, MMMM D, YYYY'
+                                 }">
+    </trumba-schedule>
   </div>
   
   <template id="trumba-schedule">
-
+    <div class="schedule">
+      <transition-group name="schedule" 
+                        tag="div" 
+                        class="cal"
+                        @before-enter="beforeTransition"
+                        @before-leave="beforeTransition"
+                        @after-enter="afterTransition"
+                        @after-leave="afterTransition">
+        <table class="month"
+               v-for="(group, index) in byMonth(items)"
+               v-if="month == index"
+               :key="index">
+          <thead>
+            <tr class="name">
+              <th colspan="5">
+                <button class="toggle prev fa fa-chevron-left" 
+                        :disabled="month === 0" 
+                        @click="direction = 'prev'; month--"
+                        title="Previous">
+                </button>
+                {{group.name}}
+                <button class="toggle next fa fa-chevron-right"
+                        :disabled="month == byMonth(items).length - 1"
+                        @click="direction = 'next'; month++"
+                        title="Next">
+                </button>
+              </th>
+            </tr>
+            <tr class="headings">
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Event</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in group.items">
+              <td class="date">{{item.startDateTime | date(dateFormat)}}</td>
+              <td class="time">{{item.startDateTime | date(timeFormat)}}</td>
+              <td class="time">{{item.endDateTime | date(timeFormat)}}</td>
+              <td class="title">
+                <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
+                   @mouseover="showPopover(item, $event)"
+                   @mouseleave="hidePopover()"
+                   v-html="item.title"></a>
+                <span class="sign-up">
+                  <a v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
+                </span>
+              </td>
+              <td class="location" v-html="item.location"></td>
+            </tr>
+          </tbody>
+        </table>
+      </transition-group>
+      <div is="trumba-popover"
+           v-if="popover.eventID"
+           :feed="feed" 
+           :item="popover" 
+           :key="popover.eventID"
+           :format="popoverFormat"
+           :style="{ top: popover.y + 'px', left: popover.x + 'px' }">
+      </div>
+    </div>
+  </template>
+  
+  <template id="trumba-popover">
+    <div class="popover" @mouseover="onFocus" @mouseleave="onBlur">
+      <div class="title">
+        <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
+           v-html="item.title"></a>
+      </div>
+      <div class="date">{{datetime(item.startDateTime, item.endDateTime, format)}}</div>
+      <div class="location" v-html="item.location"></div>
+      <div class="desc" v-html="truncate(item.description, 200)"></div>
+      <div class="links">
+        <a class="fa fa-info"
+           :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'">
+          More Info
+        </a>
+        <a class="fa fa-calendar" 
+           :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID"
+           @click="action">
+          Add to Calendar
+        </a>
+      </div>
+    </div>
   </template>
   
   <script src="js/trumba.js"></script>
