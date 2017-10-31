@@ -81,14 +81,16 @@
            :feed="feed" 
            :item="popover" 
            :key="popover.eventID"
-           :format="popoverFormat"
-           :style="{ top: popover.y + 'px', left: popover.x + 'px' }">
+           :format="popoverFormat">
       </div>
     </div>
   </template>
   
   <template id="trumba-popover">
-    <div class="popover" @mouseover="onFocus" @mouseleave="onBlur">
+    <div class="popover" 
+         @mouseover="onFocus" 
+         @mouseleave="onBlur"
+         :style="{ top: y + 'px', left: x + 'px' }">
       <div class="title">
         <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'"
            v-html="item.title"></a>
