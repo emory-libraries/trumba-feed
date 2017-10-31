@@ -274,20 +274,33 @@ var methods = {
         self.reset = false;
         self.hover = true;
 
-        var $target = $(event.target),
-            box = $target[0].getBoundingClientRect();
+        var $target = $(event.target);
+        
+        var box = $target[0].getBoundingClientRect(),
+            coords = {
+              x: box.left + ($target.width() / 2) + 10,
+              y: box.top + $target.height() + 10
+            };
 
-        var x = box.left + ($target.width() / 2) + 10,
-            y = box.top + $target.height() + 10;
-
-        self.popover = $.extend(true, item, {
-          x: x,
-          y: y
-        });
+        self.popover = item;
 
         setTimeout(function(){ 
+                              
+          var $popover = $('.trumba .popover'); 
+          
+          if( coords.y + $popover.outerHeight() > window.innerHeight ) {
+   
+            coords.y = box.top - 10 - $popover.outerHeight();
 
-          bus.$emit('popover:show'); 
+            setTimeout(function(){ bus.$emit('popover:show', coords); }, 10);
+            
+          }
+          
+          else {
+
+            bus.$emit('popover:show', coords);
+            
+          }
 
         }, 10);
 
@@ -712,10 +725,13 @@ Vue.component('trumba-popover', {
   
   template: '#trumba-popover',
   
-  props: ['feed', 'item', 'x', 'y', 'format'],
+  props: ['feed', 'item', 'format'],
   
   data: function(){
-    return {};
+    return {
+      x: null,
+      y: null
+    };
   },
   
   filters: {
@@ -762,7 +778,9 @@ Vue.component('trumba-popover', {
     
     $self.hide();
     
-    bus.$on('popover:show', function(){
+    bus.$on('popover:show', function(coords){
+      
+      self = $.extend(true, self, coords);
                                        
       $self.fadeIn();
       
