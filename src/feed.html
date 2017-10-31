@@ -2,10 +2,8 @@
 <head>
   <title>Trumba Feed</title>
   
-  <link rel="stylesheet" href="css/style.min.css">
-  <script src="js/dependencies/jquery.min.js"></script>
-  <script src="js/dependencies/vue.min.js"></script>
-  <script src="js/dependencies/moment.min.js"></script>
+  @@css
+  @@dependencies
   
 </head>
 <body>
@@ -16,7 +14,7 @@
     <trumba-feed :count="5" 
                  :cap="100"
                  feed="https://www.trumba.com/calendars/robert-woodruff-library-classes-at-woodruff-library.json"
-                 calendar="http://web.library.emory.edu/news-events/upcoming-classes.html"
+                 calendar="schedule"
                  :date="{
                           use: 'start',
                           period: {day: true, month: true},
@@ -31,7 +29,7 @@
     <trumba-feed :count="5" 
                  :cap="100"
                  feed="https://www.trumba.com/calendars/robert-woodruff-library.json"
-                 calendar="http://web.library.emory.edu/news-events/calendar.html"
+                 calendar="calendar"
                  :date="{
                           format: 'MMM D, YYYY',
                           period: {day: true, month: true},
@@ -47,19 +45,25 @@
       <li is="trumba-item" 
           v-for="item in limit(items, count)" 
           :item="item"
+          :feed="feed"
           :calendar="calendar"
           :cap="cap"
           :date="date"></li>
-      <li class="view-all"><a :href="calendar">View all &raquo;</a></li>
+      <li class="view-all">
+        <a :href="calendar + '?feed=' + feed">View all &raquo;</a>
+      </li>
     </ul>
   </template>
   
   <template id="trumba-item">
     <li class="item" :itemid="item.eventID" :key="item.eventID">
-      <div class="date">{{datetime(item.startDateTime, item.endDateTime, date)}}</div>
+      <div class="date">
+        {{datetime(item.startDateTime, item.endDateTime, date)}}
+      </div>
       <div>
         <span class="title">
-          <a :href="calendar + '?trumbaEmbed=eventid%3D' + item.eventID + '%26view%3Devent%26-childview%3D'" v-html="item.title"></a>
+          <a :href="'detail?id=' + item.eventID + '&feed=' + feed + '&calendar=' + calendar"
+             v-html="item.title"></a>
         </span>
         <span class="sign-up">
           <a v-if="item.openSignUp" :href="item.signUpUrl">Sign Up</a>
@@ -68,14 +72,16 @@
       <div>
         <span class="desc" v-html="truncate(item.description, cap)"></span>
         <span class="more" v-if="truncated">
-          <a :href="calendar + '?trumbaEmbed=eventid%3D' + item.eventID + '%26view%3Devent%26-childview%3D'">more &raquo;</a>
+          <a :href="'detail?id=' + item.eventID + '&feed=' + feed + '&calendar=' + calendar">
+            more &raquo;
+          </a>
         </span>
       </div>
     </li>
   </template>
   
-  <script src="js/index.min.js"></script>
-  
+  @@js
+  @@livereload
   
 </body>
 </html>
