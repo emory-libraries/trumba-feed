@@ -5,6 +5,8 @@
   @@css
   @@dependencies
   
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 </head>
 <body>
   
@@ -99,14 +101,14 @@
       <div class="location" v-html="item.location"></div>
       <div class="desc" v-html="truncate(item.description, 200)"></div>
       <div class="links">
-        <a class="fa fa-info"
-           :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'">
+        <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'">
+          <span class="fa fa-info"></span>
           More Info
         </a>
-        <a class="fa fa-calendar" 
-           :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID"
-           @click="action">
-          Add to Calendar
+        <a v-if="item.openSignUp" 
+           :href="item.signUpUrl">
+          <span class="fa fa-calendar"></span>
+          Sign Up
         </a>
       </div>
     </div>

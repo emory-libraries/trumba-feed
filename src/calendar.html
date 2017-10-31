@@ -97,13 +97,13 @@
       <div class="location" v-html="item.location"></div>
       <div class="desc" v-html="truncate(item.description, 200)"></div>
       <div class="links">
-        <a class="fa fa-info"
-           :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'">
+        <a :href="'detail?id='+item.eventID+'&feed='+feed+'&calendar=calendar'">
+          <span class="fa fa-info"></span>
           More Info
         </a>
-        <a class="fa fa-calendar" 
-           :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID"
+        <a :href="'https://eventactions.com/eventactions/' + $options.filters.feedID(feed) + '#/actions/atmc/' + item.eventID"
            @click="action">
+          <span class="fa fa-calendar"></span>
           Add to Calendar
         </a>
       </div>
