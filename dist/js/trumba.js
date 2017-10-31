@@ -257,6 +257,60 @@ var methods = {
 
         return result;
 
+      },
+  
+      beforeTransition: function(target) {
+        $(target).addClass(this.direction);
+      },
+  
+      afterTransition: function(target) {
+        $(target).removeClass(this.direction);
+      },
+  
+      showPopover: function(item, event){
+      
+        var self = this;
+
+        self.reset = false;
+        self.hover = true;
+
+        var $target = $(event.target),
+            box = $target[0].getBoundingClientRect();
+
+        var x = box.left + ($target.width() / 2) + 10,
+            y = box.top + $target.height() + 10;
+
+        self.popover = $.extend(true, item, {
+          x: x,
+          y: y
+        });
+
+        setTimeout(function(){ 
+
+          bus.$emit('popover:show'); 
+
+        }, 10);
+
+      },
+  
+      hidePopover: function(){ 
+      
+        var self = this;
+      
+        self.hover = false;
+
+        setTimeout(function(){
+
+          if( !self.focus && !self.hover ) {
+
+            self.reset = true;
+
+            bus.$emit('popover:hide', self.reset);
+
+          }
+
+        }, 500);
+
       }
   
     },
@@ -516,58 +570,13 @@ Vue.component('trumba-calendar', {
     
     datetime: methods.datetime,
     
-    beforeTransition: function(target) {
-      $(target).addClass(this.direction);
-    },
+    beforeTransition: methods.beforeTransition,
     
-    afterTransition: function(target) {
-      $(target).removeClass(this.direction);
-    },
+    afterTransition: methods.afterTransition,
     
-    showPopover: function(item, event){
-      
-      var self = this;
-      
-      self.reset = false;
-      self.hover = true;
-      
-      var $target = $(event.target);
-      
-      var x = $target.offset().left + ($target.width() / 2) + 10,
-          y = $target.offset().top + $target.height() + 10;
-      
-      self.popover = $.extend(true, item, {
-        x: x,
-        y: y
-      });
-      
-      setTimeout(function(){ 
-        
-        bus.$emit('popover:show'); 
-      
-      }, 10);
-      
-    },
+    showPopover: methods.showPopover,
     
-    hidePopover: function(){ 
-      
-      var self = this;
-      
-      self.hover = false;
-      
-      setTimeout(function(){
-        
-        if( !self.focus && !self.hover ) {
-      
-          self.reset = true;
-
-          bus.$emit('popover:hide', self.reset);
-
-        }
-        
-      }, 500);
-      
-    }
+    hidePopover: methods.hidePopover
     
   },
   
@@ -643,58 +652,13 @@ Vue.component('trumba-schedule', {
     
     datetime: methods.datetime,
     
-    beforeTransition: function(target) {
-      $(target).addClass(this.direction);
-    },
+    beforeTransition: methods.beforeTransition,
     
-    afterTransition: function(target) {
-      $(target).removeClass(this.direction);
-    },
+    afterTransition: methods.afterTransition,
     
-    showPopover: function(item, event){
-      
-      var self = this;
-      
-      self.reset = false;
-      self.hover = true;
-      
-      var $target = $(event.target);
-      
-      var x = $target.offset().left + ($target.width() / 2) + 10,
-          y = $target.offset().top + $target.height() + 10;
-      
-      self.popover = $.extend(true, item, {
-        x: x,
-        y: y
-      });
-      
-      setTimeout(function(){ 
-        
-        bus.$emit('popover:show'); 
-      
-      }, 10);
-      
-    },
+    showPopover: methods.showPopover,
     
-    hidePopover: function(){ 
-      
-      var self = this;
-      
-      self.hover = false;
-      
-      setTimeout(function(){
-        
-        if( !self.focus && !self.hover ) {
-      
-          self.reset = true;
-
-          bus.$emit('popover:hide', self.reset);
-
-        }
-        
-      }, 500);
-      
-    }
+    hidePopover: methods.hidePopover
     
   },
   
